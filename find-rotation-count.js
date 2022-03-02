@@ -1,22 +1,28 @@
-function findRotationCount(arr, low = 0, high = arr.length - 1) {
 
-  if (high < low) return 0;
-  if (high === low) return low;
-  let mid = Math.floor((low + high) / 2);
+/** COPIED FROM SPRINGBOARD SOLUTION */
 
-  if (mid < high && arr[mid + 1] < arr[mid]) {
-    return mid + 1
+function findRotationCount(arr, leftIdx = 0, rightIdx = arr.length - 1) {
+
+  if (rightIdx < leftIdx) return 0; // if the beginning of the array is reached, there is no rotation
+  if (rightIdx === leftIdx) return leftIdx;
+  let midIdx = Math.floor((leftIdx + rightIdx) / 2);
+
+  // if the next sequential value is lower than the current, that index is the rotation count
+  if (midIdx < rightIdx && arr[midIdx + 1] < arr[midIdx]) {
+    return midIdx + 1
   }
 
-  if (mid > low && arr[mid] < arr[mid - 1]) {
-    return mid;
+  // if the previous value is higher than the current, the current index is the rotation count
+  if (midIdx > leftIdx && arr[midIdx] < arr[midIdx - 1]) {
+    return midIdx;
   }
 
-  if (arr[high] > arr[mid]) {
-    return findRotationCount(arr, low, mid - 1);
+  // if the value to the right is higher than the mid, continue searching the left half of the array
+  if (arr[rightIdx] > arr[midIdx]) {
+    return findRotationCount(arr, leftIdx, midIdx - 1);
   }
-
-  return findRotationCount(arr, mid + 1, high);
+  
+  return findRotationCount(arr, midIdx + 1, rightIdx);
 
 }
 
